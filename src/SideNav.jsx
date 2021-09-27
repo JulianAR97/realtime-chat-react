@@ -1,7 +1,10 @@
+import React, {useState, useEffect} from 'react'
 import { Container } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import React from 'react'
 import MessageGroup from './MessageGroup'
+import db from './firebase.js'
+import { onSnapshot, collection} from "firebase/firestore"
+
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -24,7 +27,40 @@ const useStyles = makeStyles(theme => ({
 const SideNav = () => {
 
   const classes = useStyles()
-  
+  const [groups, setGroups] = useState([])
+
+
+  useEffect(() => {
+    const unsub = onSnapshot(collection(db, "groups"), (snapshot) => {
+      setGroups(snapshot.docs.map(doc => {
+        let { name } = doc.data()
+        return ({
+          id: doc.id,
+          name
+        })
+      }
+      ))
+    });
+
+    return unsub
+    
+  }, [])
+
+  const renderGroups = () => {
+
+    if (groups.length) {
+      // if we have groups, render the groups
+      return groups.map(group => (
+        <MessageGroup name={group.name} />
+      ))
+    
+    } else {
+      // otherwise render default group 
+      return <MessageGroup />
+    }
+  }
+
+  console.log(groups)
   return (
     <Container className={classes.container}>
 
@@ -33,9 +69,7 @@ const SideNav = () => {
       </div>
 
       <div className={classes.body}>
-        <MessageGroup />
-        <MessageGroup />
-        <MessageGroup />
+        {renderGroups()}
       </div>
       
     </Container>
