@@ -23,35 +23,35 @@ const useStyles = makeStyles(theme => ({
   },
   sent: {
     marginLeft: 'auto',
-    backgroundColor: 'lightgreen'
+    backgroundColor: '#05e254' // light green
   }
 }))
 
 const Message = (props) => {
   
   const classes = useStyles()
-  const {messageName, messageContent, messageTimestamp, sent} = props
+  const {mName, mContent, mTimestamp, sent} = props
   
   return (
     <p className={sent ? [classes.message, classes.sent].join(' ') : classes.message}>
       
       <span className={classes.messageName}>
-        {messageName}
+        {mName}
       </span>
       
-      {messageContent}
+      {mContent}
       
       <span className={classes.messageTS}>
-        {messageTimestamp}
+        {mTimestamp}
       </span>
     </p>
   )
 }
 
 Message.defaultProps = {
-  messageTimestamp: new Date().toUTCString(),
-  messageContent: "Lorem ipsum dolor sit amet",
-  messageName: 'John Doe',
+  mTimestamp: new Date().toUTCString(),
+  mContent: "Lorem ipsum dolor sit amet",
+  mName: 'John Doe',
   sent: false
 }
 
