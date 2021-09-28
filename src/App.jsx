@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Pusher from 'pusher-js'
 import { makeStyles } from '@mui/styles'
 import { Paper } from '@mui/material'
 import SideNav from './SideNav'
