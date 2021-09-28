@@ -1,8 +1,8 @@
-import { Box, IconButton } from '@mui/material'
+import { Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import { Send as SendIcon } from '@mui/icons-material'
 import React from 'react'
 import Message from './Message'
+import MessageForm from './MessageForm'
 
 const useStyles = makeStyles(theme => ({
   box: {
@@ -31,20 +31,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'lightgrey',
     padding: '10px'
   },
-  messageForm: {
-    display: 'flex',
-    flex: 1,
-  },
-  messageInput: {
-    flex: 1,
-    borderRadius: '30px',
-    padding: '10px',
-    border: 'none',
-    outline: 'none'
-  },
-  messageSendButton: {
-    display: 'none'
-  }
+
 
 }))
 
@@ -55,9 +42,10 @@ const MessageRoom = (props) => {
     return messages.map((message, i) => (
       <Message
         key={i}
-        mName={message.mName}
-        mContent={message.mContent}
-        sent={message.sent}
+        username={message.name}
+        content={message.content}
+        timestamp={message.timestamp}
+        userID={message.userID}
       />
     ))  
   }
@@ -71,34 +59,14 @@ const MessageRoom = (props) => {
         {renderMessages(props.messages)}
       </div>
       <div className={classes.footer}>
-        <form className={classes.messageForm}>
-          <input
-            className={classes.messageInput} 
-            placeholder="Enter message..." 
-            type="text"
-          />
-          <IconButton>
-            <SendIcon />
-          </IconButton>
-        </form>
+       <MessageForm />
       </div>
     </Box>
   )
 }
 
 MessageRoom.defaultProps = {
-  messages: [
-    {
-      mName: 'John Doe',
-      mContent: 'Hello World',
-      sent: false
-    },
-    {
-      mName: 'Jane Doe',
-      mContent: 'Goodbye World',
-      sent: true
-    }
-  ]
+  messages: []
 }
 
 export default MessageRoom
