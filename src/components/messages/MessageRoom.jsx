@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 const MessageRoom = (props) => {
   const classes = useStyles()
-  
+
   const renderMessages = (messages) => {
     return messages.map((message, i) => (
       <Message
@@ -45,7 +45,7 @@ const MessageRoom = (props) => {
         username={message.name}
         content={message.content}
         timestamp={message.timestamp}
-        userID={message.userID}
+        uid={message.uid}
       />
     ))  
   }
