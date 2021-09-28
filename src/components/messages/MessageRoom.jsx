@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Message from 'components/messages/Message'
 import MessageForm from 'components/messages/MessageForm'
 import { connect } from 'react-redux'
@@ -38,7 +38,12 @@ const useStyles = makeStyles(theme => ({
 
 const MessageRoom = (props) => {
   const classes = useStyles()
+  const [messages, setMessages] = useState([])
 
+  useEffect(() => {
+    setMessages(props.selectedGroup?.messages || [])
+  }, [props])
+  
   const renderMessages = (messages) => {
     return messages.map((message, i) => (
       <Message
@@ -57,7 +62,7 @@ const MessageRoom = (props) => {
         I am MR
       </div>
       <div className={classes.body}>
-        {renderMessages(props.messages)}
+        {renderMessages(messages)}
       </div>
       <div className={classes.footer}>
        <MessageForm />
@@ -67,11 +72,11 @@ const MessageRoom = (props) => {
 }
 
 MessageRoom.defaultProps = {
-  messages: []
+  selectedGroup: null
 }
 
 const mapStateToProps = state => ({
-  messages: state.selectedGroup?.messages
+  selectedGroup: state.selectedGroup,
 })
 
 export default connect(mapStateToProps, null)(MessageRoom)
