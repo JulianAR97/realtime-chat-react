@@ -1,8 +1,8 @@
 import { Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import React from 'react'
-import Message from './Message'
-import MessageForm from './MessageForm'
+import Message from 'components/messages/Message'
+import MessageForm from 'components/messages/MessageForm'
 
 const useStyles = makeStyles(theme => ({
   box: {

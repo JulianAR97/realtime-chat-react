@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@mui/styles'
 import { Paper } from '@mui/material'
-import SideNav from './SideNav'
-import MessageRoom from './MessageRoom'
-import db from './firebase.js'
+import SideNav from 'components/SideNav'
+import MessageRoom from 'components/messages/MessageRoom'
+import db from 'firebase.js'
 import { onSnapshot, collection } from "firebase/firestore"
 
 const useStyles = makeStyles(theme => ({

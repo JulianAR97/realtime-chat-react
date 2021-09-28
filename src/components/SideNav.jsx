@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import MessageGroup from './MessageGroup'
+import MessageGroup from 'components/messages/MessageGroup'
 
 
 const useStyles = makeStyles(theme => ({
