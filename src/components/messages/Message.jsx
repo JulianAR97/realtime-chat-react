@@ -33,10 +33,7 @@ const Message = (props) => {
   const classes = useStyles()
   const {username, content, timestamp, uid} = props
   const {currentUser} = useAuth()
-  
-  console.log(currentUser.uid)
-  console.log(uid)
-  console.log(username)
+
   
   return (
     
