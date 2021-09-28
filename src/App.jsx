@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
 import { Paper } from '@mui/material'
 import SideNav from 'components/SideNav'
@@ -7,6 +7,8 @@ import db from 'firebase.js'
 import { onSnapshot, collection } from "firebase/firestore"
 import Login from 'components/auth/Login'
 import { useAuth } from 'contexts/AuthContext'
+import { setGroups } from 'actions/groupActions'
+import { connect } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   App: {
@@ -22,16 +24,16 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const App = () => {
+const App = (props) => {
   const classes = useStyles()
-  const [groups, setGroups] = useState([])
-  const [messages, setMessages] = useState([])
-  const [selectedGroup, setSelectedGroup] = useState("")
   const { currentUser } = useAuth()
+
+  const sg = props.setGroups
   
+  // setGroups when component loads or currentUser changes
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "groups"), (snapshot) => {
-      setGroups(snapshot.docs.map(doc => {
+      sg(snapshot.docs.map(doc => {
         let { name, messages } = doc.data()
         return ({
           id: doc.id,
@@ -41,38 +43,24 @@ const App = () => {
       }))
     });
     return unsubscribe
-  }, [])
+  }, [sg, currentUser])
 
-  useEffect(() => {
-    if (groups[0] && !selectedGroup) {
-      setSelectedGroup(groups[0].id)
-    }
-  }, [groups, selectedGroup])
-
-  useEffect(() => {
-    if (groups.length && selectedGroup) {
-      let group = groups.find(group => group.id === selectedGroup)
-      setMessages(group.messages)
-    }
-  }, [groups, selectedGroup])
-
-  const handleGroupSelect = (groupID) => {
-    setSelectedGroup(groupID)
-  }
+  
 
   return (
 
     <div className={classes.App}>
       <Paper className={classes.Paper}>
-        {currentUser ? (
-          <>
-            <SideNav groups={groups} handleGroupSelect={handleGroupSelect} selectedGroup={selectedGroup}/>
-            <MessageRoom messages={messages} selectedGroup={selectedGroup}/>
-          </>
-        )
-        : (
-          <Login />
-        )
+        {
+          currentUser ? (
+            <>
+              <SideNav />
+              <MessageRoom />
+            </>
+          )
+          : (
+            <Login />
+          )
         }
       </Paper>
     </div>
@@ -80,4 +68,8 @@ const App = () => {
   )
 }
 
-export default App
+const mapStateToProps = state => ({
+  groups: state.groups
+})
+
+export default connect(mapStateToProps, {setGroups})(App)
