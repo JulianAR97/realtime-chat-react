@@ -1,9 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import { Container } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import MessageGroup from './MessageGroup'
-import db from './firebase.js'
-import { onSnapshot, collection} from "firebase/firestore"
 
 
 const useStyles = makeStyles(theme => ({
@@ -24,34 +22,24 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const SideNav = () => {
+const SideNav = (props) => {
 
+  const { groups, handleGroupSelect, selectedGroup } = props
   const classes = useStyles()
-  const [groups, setGroups] = useState([])
-
-
-  useEffect(() => {
-    const unsub = onSnapshot(collection(db, "groups"), (snapshot) => {
-      setGroups(snapshot.docs.map(doc => {
-        let { name } = doc.data()
-        return ({
-          id: doc.id,
-          name
-        })
-      }
-      ))
-    });
-
-    return unsub
-    
-  }, [])
 
   const renderGroups = () => {
 
     if (groups.length) {
       // if we have groups, render the groups
-      return groups.map(group => (
-        <MessageGroup name={group.name} />
+      return groups.map((group, i) => (
+        <MessageGroup
+          key={group.id}
+          id={group.id}
+          name={group.name} 
+          lastMessage={group.messages[group.messages.length - 1]}
+          handleGroupSelect={handleGroupSelect}
+          selectedGroup={selectedGroup}
+        />
       ))
     
     } else {
@@ -60,7 +48,6 @@ const SideNav = () => {
     }
   }
 
-  console.log(groups)
   return (
     <Container className={classes.container}>
 
@@ -74,6 +61,10 @@ const SideNav = () => {
       
     </Container>
   )
+}
+
+SideNav.defaultProps = {
+  groups: []
 }
 
 export default SideNav
