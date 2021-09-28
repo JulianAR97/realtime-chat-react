@@ -3,6 +3,7 @@ import { makeStyles } from '@mui/styles'
 import React from 'react'
 import Message from 'components/messages/Message'
 import MessageForm from 'components/messages/MessageForm'
+import { connect } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   box: {
@@ -42,7 +43,7 @@ const MessageRoom = (props) => {
     return messages.map((message, i) => (
       <Message
         key={i}
-        username={message.name}
+        username={message.username}
         content={message.content}
         timestamp={message.timestamp}
         uid={message.uid}
@@ -69,4 +70,8 @@ MessageRoom.defaultProps = {
   messages: []
 }
 
-export default MessageRoom
+const mapStateToProps = state => ({
+  messages: state.selectedGroup?.messages
+})
+
+export default connect(mapStateToProps, null)(MessageRoom)

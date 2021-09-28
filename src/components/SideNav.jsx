@@ -2,6 +2,7 @@ import React from 'react'
 import { Container } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import MessageGroup from 'components/messages/MessageGroup'
+import { connect } from 'react-redux'
 
 
 const useStyles = makeStyles(theme => ({
@@ -23,22 +24,20 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const SideNav = (props) => {
-
-  const { groups, handleGroupSelect, selectedGroup } = props
   const classes = useStyles()
+  const { groups, selectedGroup } = props
 
-  const renderGroups = () => {
+  
+  const renderGroups = (groups) => {
 
     if (groups.length) {
       // if we have groups, render the groups
-      return groups.map((group, i) => (
+      return groups.map(group => (
         <MessageGroup
           key={group.id}
-          id={group.id}
-          name={group.name} 
+          name={group.name}
           lastMessage={group.messages[group.messages.length - 1]}
-          handleGroupSelect={handleGroupSelect}
-          selectedGroup={selectedGroup}
+          selected={group.id === selectedGroup.id}
         />
       ))
     
@@ -56,7 +55,7 @@ const SideNav = (props) => {
       </div>
 
       <div className={classes.body}>
-        {renderGroups()}
+        {renderGroups(groups)}
       </div>
       
     </Container>
@@ -67,4 +66,9 @@ SideNav.defaultProps = {
   groups: []
 }
 
-export default SideNav
+const mapStateToProps = state => ({
+  groups: state.groups,
+  selectedGroup: state.selectedGroup
+})
+
+export default connect(mapStateToProps, {})(SideNav)

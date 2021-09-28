@@ -1,6 +1,8 @@
 import React from 'react'
 import { makeStyles } from '@mui/styles'
 import { Avatar, Typography } from '@mui/material'
+import { connect } from 'react-redux'
+import { setSelectedGroup } from 'actions/groupActions'
 
 const useStyles = makeStyles(theme => ({
   container:  {
@@ -31,7 +33,8 @@ const useStyles = makeStyles(theme => ({
 const MessageGroup = (props) => {
   const classes = useStyles()
   
-  const { lastMessage, handleGroupSelect, name, id, selectedGroup } = props
+  const { lastMessage, name, selected } = props
+  
   
   const avatarSrc = () => {
     // John Smith => JS e.g.
@@ -39,20 +42,25 @@ const MessageGroup = (props) => {
     
     return `https://avatars.dicebear.com/api/initials/${slug}.svg`
   }
-
-  const selected = selectedGroup === id
   
+
   return (
-    <div className={selected ? `${classes.container} ${classes.selected}` : classes.container} onClick={() => handleGroupSelect(id)} selected>
+    <div 
+      className={selected ? `${classes.container} ${classes.selected}` : classes.container} 
+    >
       <Avatar src={avatarSrc()}/>
+      
       <div className={classes.infoContainer}>
+        
         <Typography className={classes.groupName}>
           {name}
         </Typography>
         <Typography className={classes.lastMessage}>
           {lastMessage.content}
         </Typography>
+
       </div>
+
     </div>
   )
 }
@@ -60,9 +68,21 @@ const MessageGroup = (props) => {
 MessageGroup.defaultProps = {
   name: 'Default',
   lastMessage: {
-    content: 'Search Rooms to get started',
-    username: 'Default'
-  }
+    timestamp: {seconds: 1632740700, nanoseconds: 0},
+    content: "Add groups via searchbar",
+    uid: '1234',
+    username: 'John Doe'
+  },
+  selected: true
 }
 
-export default MessageGroup
+export default connect(null, {setSelectedGroup})(MessageGroup)
+
+/*
+props: 
+group: {
+
+},
+selected Boolean
+
+*/
