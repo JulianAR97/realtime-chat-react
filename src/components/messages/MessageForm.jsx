@@ -58,6 +58,7 @@ const MessageForm = (props) => {
   }
 
   const handleInputChange = (e) => {
+    // don't let user submit an empty message
     if (e.target.value) {
       setLoading(false)
     } else {
