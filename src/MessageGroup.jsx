@@ -22,22 +22,35 @@ const useStyles = makeStyles(theme => ({
   },
   infoContainer: {
     marginLeft: '15px',
+  },
+  selected: {
+    backgroundColor: 'lightgrey'
   }
 }))
 
 const MessageGroup = (props) => {
-
   const classes = useStyles()
   
+  const { lastMessage, handleGroupSelect, name, id, selectedGroup } = props
+  
+  const avatarSrc = () => {
+    // John Smith => JS e.g.
+    let slug = lastMessage.username.split(' ').slice(0, 2).map(x => x[0]).join('')
+    
+    return `https://avatars.dicebear.com/api/initials/${slug}.svg`
+  }
+
+  const selected = selectedGroup === id
+  
   return (
-    <div className={classes.container}>
-      <Avatar />
+    <div className={selected ? `${classes.container} ${classes.selected}` : classes.container} onClick={() => handleGroupSelect(id)} selected>
+      <Avatar src={avatarSrc()}/>
       <div className={classes.infoContainer}>
         <Typography className={classes.groupName}>
-          {props.groupName}
+          {name}
         </Typography>
         <Typography className={classes.lastMessage}>
-          {props.lastMessage}
+          {lastMessage.content}
         </Typography>
       </div>
     </div>
@@ -45,8 +58,11 @@ const MessageGroup = (props) => {
 }
 
 MessageGroup.defaultProps = {
-  groupName: 'Default',
-  lastMessage: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua'
+  name: 'Default',
+  lastMessage: {
+    content: 'Search Rooms to get started',
+    username: 'Default'
+  }
 }
 
 export default MessageGroup
