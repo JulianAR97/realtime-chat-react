@@ -5,6 +5,8 @@ import SideNav from 'components/SideNav'
 import MessageRoom from 'components/messages/MessageRoom'
 import db from 'firebase.js'
 import { onSnapshot, collection } from "firebase/firestore"
+import Login from 'components/auth/Login'
+import { useAuth } from 'contexts/AuthContext'
 
 const useStyles = makeStyles(theme => ({
   App: {
@@ -25,9 +27,10 @@ const App = () => {
   const [groups, setGroups] = useState([])
   const [messages, setMessages] = useState([])
   const [selectedGroup, setSelectedGroup] = useState("")
+  const { currentUser } = useAuth()
   
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, "groups"), (snapshot) => {
+    const unsubscribe = onSnapshot(collection(db, "groups"), (snapshot) => {
       setGroups(snapshot.docs.map(doc => {
         let { name, messages } = doc.data()
         return ({
@@ -35,30 +38,45 @@ const App = () => {
           name,
           messages
         })
-      }
-      ))
+      }))
     });
-
-    return unsub
-    
+    return unsubscribe
   }, [])
+
+  useEffect(() => {
+    if (groups[0] && !selectedGroup) {
+      setSelectedGroup(groups[0].id)
+    }
+  }, [groups, selectedGroup])
+
+  useEffect(() => {
+    if (groups.length && selectedGroup) {
+      let group = groups.find(group => group.id === selectedGroup)
+      setMessages(group.messages)
+    }
+  }, [groups, selectedGroup])
 
   const handleGroupSelect = (groupID) => {
     setSelectedGroup(groupID)
-    setMessages(() => {
-      let group = groups.find(g => g.id === groupID)
-      return group.messages
-    })
   }
-  
 
   return (
+
     <div className={classes.App}>
       <Paper className={classes.Paper}>
-        <SideNav groups={groups} handleGroupSelect={handleGroupSelect} selectedGroup={selectedGroup}/>
-        <MessageRoom messages={messages}/>
+        {currentUser ? (
+          <>
+            <SideNav groups={groups} handleGroupSelect={handleGroupSelect} selectedGroup={selectedGroup}/>
+            <MessageRoom messages={messages} selectedGroup={selectedGroup}/>
+          </>
+        )
+        : (
+          <Login />
+        )
+        }
       </Paper>
     </div>
+  
   )
 }
 
