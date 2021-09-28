@@ -30,29 +30,29 @@ const useStyles = makeStyles(theme => ({
 const Message = (props) => {
   
   const classes = useStyles()
-  const {mName, mContent, mTimestamp, sent} = props
+  const {username, content, timestamp} = props
   
   return (
-    <p className={sent ? [classes.message, classes.sent].join(' ') : classes.message}>
+    <p className={classes.message}>
       
       <span className={classes.messageName}>
-        {mName}
+        {username}
       </span>
       
-      {mContent}
+      {content}
       
       <span className={classes.messageTS}>
-        {mTimestamp}
+        {new Date(timestamp.seconds).toLocaleString()}
       </span>
     </p>
   )
 }
 
 Message.defaultProps = {
-  mTimestamp: new Date().toUTCString(),
-  mContent: "Lorem ipsum dolor sit amet",
-  mName: 'John Doe',
-  sent: false
+  timestamp: new Date().toLocaleString(),
+  content: "Lorem ipsum dolor sit amet",
+  username: 'John Doe',
+  userID: '123456'
 }
 
 export default Message
