@@ -1,5 +1,6 @@
 import { makeStyles } from '@mui/styles'
 import React from 'react'
+import { useAuth } from 'contexts/AuthContext'
 
 const useStyles = makeStyles(theme => ({
   message: {
@@ -30,10 +31,13 @@ const useStyles = makeStyles(theme => ({
 const Message = (props) => {
   
   const classes = useStyles()
-  const {username, content, timestamp} = props
+  const {username, content, timestamp, uid} = props
+  const {currentUser} = useAuth()
+  
   
   return (
-    <p className={classes.message}>
+    
+    <p className={currentUser.uid === uid ? `${classes.message} ${classes.sent}` : classes.message}>
       
       <span className={classes.messageName}>
         {username}
@@ -52,7 +56,7 @@ Message.defaultProps = {
   timestamp: new Date().toLocaleString(),
   content: "Lorem ipsum dolor sit amet",
   username: 'John Doe',
-  userID: '123456'
+  uid: '123456'
 }
 
 export default Message
