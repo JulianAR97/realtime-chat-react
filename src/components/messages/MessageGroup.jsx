@@ -33,8 +33,7 @@ const useStyles = makeStyles(theme => ({
 const MessageGroup = (props) => {
   const classes = useStyles()
   
-  const { lastMessage, name, selected } = props
-  
+  const { id, lastMessage, name, selected } = props
   
   const avatarSrc = () => {
     // John Smith => JS e.g.
@@ -46,7 +45,8 @@ const MessageGroup = (props) => {
 
   return (
     <div 
-      className={selected ? `${classes.container} ${classes.selected}` : classes.container} 
+      className={selected ? `${classes.container} ${classes.selected}` : classes.container}
+      onClick={() => props.setSelectedGroup(id)}
     >
       <Avatar src={avatarSrc()}/>
       
@@ -67,6 +67,7 @@ const MessageGroup = (props) => {
 
 MessageGroup.defaultProps = {
   name: 'Default',
+  id: '1234',
   lastMessage: {
     timestamp: {seconds: 1632740700, nanoseconds: 0},
     content: "Add groups via searchbar",
@@ -76,7 +77,11 @@ MessageGroup.defaultProps = {
   selected: true
 }
 
-export default connect(null, {setSelectedGroup})(MessageGroup)
+const mapStateToProps = state => ({
+  selectedGroup: state.selectedGroup
+})
+
+export default connect(mapStateToProps, {setSelectedGroup})(MessageGroup)
 
 /*
 props: 
