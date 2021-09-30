@@ -6,12 +6,14 @@ const initialState = {
 }
 
 const groupReducer = (state = initialState, action) => {
+  let selectedGroup;
   
   switch (action.type) {
+    
     case 'SET_GROUPS':
       // When setting groups, if no group is selected, we can just select the first one
-      let selectedGroup;
-
+      selectedGroup = state.selectedGroup;
+  
       // reset selected group when messages update
       if (selectedGroup) {
         selectedGroup = action.payload.groups.find(g => g.id === selectedGroup.id)
@@ -19,20 +21,25 @@ const groupReducer = (state = initialState, action) => {
         selectedGroup = action.payload.groups[0]
       }
       
-      return ({
-        ...state,
-        groups: action.payload.groups,
-        selectedGroup
-      })
+      return (
+        {
+          ...state,
+          groups: action.payload.groups,
+          selectedGroup: selectedGroup
+        }
+      )
     
     case 'SET_SELECTED_GROUP':
+      selectedGroup = state.groups.find(g => g.id === action.payload.groupId)
+      
       return ({
         ...state,
-        selectedGroup: action.payload.selectedGroup
+        selectedGroup
       })
-      
-    default:
+
+    default:  
       return state
+  
   }
 }
 

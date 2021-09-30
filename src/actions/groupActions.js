@@ -5,8 +5,8 @@ export const setGroups = (groups) => {
   }
 }
 
-export const setSelectedGroup = (group) => {
+export const setSelectedGroup = (groupId) => {
   return dispatch => {
-    dispatch({type: 'SET_SELECTED_GROUP', payload: {group}})
+    dispatch({type: 'SET_SELECTED_GROUP', payload: {groupId}})
   }
 }
