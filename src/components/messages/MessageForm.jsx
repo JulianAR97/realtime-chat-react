@@ -28,14 +28,14 @@ const MessageForm = (props) => {
   const [loading, setLoading] = useState(true)
  
   const { currentUser } = useAuth()
-
+  
   const handleSubmit = (e) => {
     e.preventDefault()
     setLoading(true)
     const username = currentUser.displayName
     const uid = currentUser.uid  
     
-    const docRef = doc(db, 'groups', props.selectedGroup.id)
+    const docRef = doc(db, 'groups', props.selectedGroup)
     
     const newMessage = { 
       username, 
@@ -43,14 +43,17 @@ const MessageForm = (props) => {
       content: input, 
       timestamp: Timestamp.fromDate(new Date()) 
     }
+
+    if (docRef) {
+      try {
+        updateDoc(docRef, {
+          messages: arrayUnion(newMessage)
+        })
+      } catch (err) {
+        alert(err.message)
+      } 
+    }
     
-    try {
-      updateDoc(docRef, {
-        messages: arrayUnion(newMessage)
-      })
-    } catch (err) {
-      alert(err.message)
-    } 
     
     // send to firebase
     setLoading(false)
@@ -77,7 +80,8 @@ const MessageForm = (props) => {
         value={input}
         onChange={handleInputChange}
       />
-      <IconButton type="submit" onClick={handleSubmit} disabled={loading}>
+      {/* if component is loading or there isn't a selected group, disable submit */ }
+      <IconButton type="submit" onClick={handleSubmit} disabled={loading || !props.selectedGroup}>
         <SendIcon />
       </IconButton>
     </form>
@@ -89,6 +93,7 @@ MessageForm.defaultProps = {
 }
 
 const mapStateToProps = (state) => ({
+  userGroups: state.userGroups,
   selectedGroup: state.selectedGroup
 })
 

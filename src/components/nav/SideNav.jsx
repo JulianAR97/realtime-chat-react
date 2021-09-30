@@ -33,20 +33,23 @@ const useStyles = makeStyles(theme => ({
 
 const SideNav = (props) => {
   const classes = useStyles()
-  const { groups, selectedGroup } = props
+  const { groups, selectedGroup, userGroups } = props
+
+  const filteredGroups = () => groups.filter(g => userGroups.includes(g.id))
 
   
-  const renderGroups = (groups) => {
+  const renderGroups = (filteredGroups) => {
+   
+    if (filteredGroups.length) {
 
-    if (groups.length) {
       // if we have groups, render the groups
-      return groups.map(group => (
+      return filteredGroups.map(group => (
         <MessageGroup
           key={group.id}
           id={group.id}
           name={group.name}
           lastMessage={group.messages[group.messages.length - 1]}
-          selected={group.id === selectedGroup.id}
+          selected={group.id === selectedGroup}
         />
       ))
     
@@ -68,7 +71,7 @@ const SideNav = (props) => {
       </div>
 
       <div className={classes.body}>
-        {renderGroups(groups)}
+        {renderGroups(filteredGroups())}
       </div>
       
     </Container>
@@ -76,11 +79,14 @@ const SideNav = (props) => {
 }
 
 SideNav.defaultProps = {
+  userGroups: [],
+  selectedGroup: null,
   groups: []
 }
 
 const mapStateToProps = state => ({
   groups: state.groups,
+  userGroups: state.userGroups,
   selectedGroup: state.selectedGroup
 })
 

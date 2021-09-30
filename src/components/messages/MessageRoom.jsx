@@ -40,9 +40,12 @@ const MessageRoom = (props) => {
   const classes = useStyles()
   const [messages, setMessages] = useState([])
 
+  const { groups, selectedGroup } = props
+  const group = groups.find(g => g.id === selectedGroup)
+  
   useEffect(() => {
-    setMessages(props.selectedGroup?.messages || [])
-  }, [props])
+    setMessages(group?.messages || [])
+  }, [group])
   
   const renderMessages = (messages) => {
     return messages.map((message, i) => (
@@ -58,25 +61,31 @@ const MessageRoom = (props) => {
 
   return (
     <Box className={classes.box}>
+      
       <div className={classes.header}>
         I am MR
       </div>
+      
       <div className={classes.body}>
         {renderMessages(messages)}
       </div>
+      
       <div className={classes.footer}>
        <MessageForm />
       </div>
+    
     </Box>
   )
 }
 
 MessageRoom.defaultProps = {
-  selectedGroup: null
+  selectedGroup: null,
+  groups: []
 }
 
 const mapStateToProps = state => ({
   selectedGroup: state.selectedGroup,
+  groups: state.groups
 })
 
 export default connect(mapStateToProps, null)(MessageRoom)
