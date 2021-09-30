@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
 import { Paper } from '@mui/material'
-import SideNav from 'components/SideNav'
+import SideNav from 'components/nav/SideNav'
 import MessageRoom from 'components/messages/MessageRoom'
 import db from 'firebase.js'
 import { onSnapshot, collection } from "firebase/firestore"
