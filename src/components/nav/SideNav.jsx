@@ -3,6 +3,7 @@ import { Container } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import MessageGroup from 'components/messages/MessageGroup'
 import { connect } from 'react-redux'
+import NavSearch from 'components/nav/NavSearch'
 
 
 const useStyles = makeStyles(theme => ({
@@ -20,6 +21,13 @@ const useStyles = makeStyles(theme => ({
   body: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  search: {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: 'lightgrey',
+    height: '40px',
+    padding: '10px'
   }
 }))
 
@@ -35,6 +43,7 @@ const SideNav = (props) => {
       return groups.map(group => (
         <MessageGroup
           key={group.id}
+          id={group.id}
           name={group.name}
           lastMessage={group.messages[group.messages.length - 1]}
           selected={group.id === selectedGroup.id}
@@ -51,7 +60,11 @@ const SideNav = (props) => {
     <Container className={classes.container}>
 
       <div className={classes.header}>
-
+        
+      </div>
+      
+      <div className={classes.search}>
+        <NavSearch />
       </div>
 
       <div className={classes.body}>
