@@ -10,7 +10,7 @@ const profileReducer = (state = initialState, action) => {
     case 'SET_PROFILE':
       return (
         {
-          username: action.payload.usernam,
+          username: action.payload.username,
           groups: action.payload.groups
         }
       )

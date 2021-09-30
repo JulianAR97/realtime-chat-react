@@ -29,6 +29,9 @@ export const getProfile = async (currentUser) => {
 }
 
 // set profile redux
-export const setProfile = () => {
-  
+export const setProfile = (profile) => {
+  const {username, groups} = profile
+  return dispatch => {
+    dispatch({type: 'SET_PROFILE', payload: { username, groups }})
+  }
 }
