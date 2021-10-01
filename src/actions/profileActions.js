@@ -1,5 +1,5 @@
 import db from 'firebase.js'
-import { arrayUnion, collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
+import { arrayRemove, arrayUnion, collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 
 // Firebase
 
@@ -30,12 +30,20 @@ export const getProfile = async (currentUser) => {
   }
 }
 
-export const addUserGroup = async(groupId, uid) => {
+export const addUserGroup = async (groupId, uid) => {
   const profileDocRef = doc(db, "profiles", uid)
 
   await updateDoc(profileDocRef, {
     // arrayUnion works like push
     "groups": arrayUnion(groupId)
+  })
+}
+
+export const removeUserGroup = async (groupId, uid) => {
+  const profileDocRef = doc(db, "profiles", uid)
+
+  await updateDoc(profileDocRef, {
+    "groups": arrayRemove(groupId)
   })
 }
 
