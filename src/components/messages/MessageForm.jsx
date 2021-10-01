@@ -70,6 +70,8 @@ const MessageForm = (props) => {
     setInput(e.target.value)
   }
 
+  const disabled = loading || !props.selectedGroup || !props.userGroups.includes(props.selectedGroup)
+
   
   return (
     <form className={classes.form}>
@@ -81,7 +83,7 @@ const MessageForm = (props) => {
         onChange={handleInputChange}
       />
       {/* if component is loading or there isn't a selected group, disable submit */ }
-      <IconButton type="submit" onClick={handleSubmit} disabled={loading || !props.selectedGroup}>
+      <IconButton type="submit" onClick={handleSubmit} disabled={disabled}>
         <SendIcon />
       </IconButton>
     </form>
@@ -89,7 +91,9 @@ const MessageForm = (props) => {
 }
 
 MessageForm.defaultProps = {
-  placeholder: "Enter message..."
+  placeholder: "Enter message...",
+  userGroups: [],
+  selectedGroups: null
 }
 
 const mapStateToProps = (state) => ({
