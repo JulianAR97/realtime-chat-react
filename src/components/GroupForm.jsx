@@ -29,7 +29,8 @@ const useStyles = makeStyles(theme => ({
   input: {
     border: 'none',
     outline: 'none',
-    fontSize: '16px'
+    fontSize: '16px',
+    width: '100%',
   },
   inputContainer: {
     padding: '5px',
