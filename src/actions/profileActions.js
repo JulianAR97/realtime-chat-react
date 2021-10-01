@@ -1,7 +1,9 @@
 import db from 'firebase.js'
-import { collection, doc, getDoc, setDoc } from 'firebase/firestore'
+import { arrayUnion, collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 
-// get or create profile from firebase
+// Firebase
+
+// Get or create profile
 export const getProfile = async (currentUser) => {
   let docRef = doc(db, "profiles", currentUser.uid)
 
@@ -28,10 +30,23 @@ export const getProfile = async (currentUser) => {
   }
 }
 
-// set profile redux
+export const addUserGroup = async(groupId, uid) => {
+  const profileDocRef = doc(db, "profiles", uid)
+
+  await updateDoc(profileDocRef, {
+    // arrayUnion works like push
+    "groups": arrayUnion(groupId)
+  })
+}
+
+
+// Redux
+
+// set profile
 export const setProfile = (profile) => {
   const {username, groups} = profile
   return dispatch => {
     dispatch({type: 'SET_PROFILE', payload: { username, groups }})
   }
 }
+
