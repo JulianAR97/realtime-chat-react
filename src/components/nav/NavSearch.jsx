@@ -17,14 +17,8 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     fontSize: '16px'
   },
-  filteredSearch: {
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-    zIndex: 99999
-  },
-  match: {
-    backgroundColor: "rgba(255, 255, 255, 1)",
-    zIndex: 99999
-  }
+
+
 }))
 
 const NavSearch = (props) => {
@@ -52,19 +46,18 @@ const NavSearch = (props) => {
   }
 
   return (
-    <>
 
-      <div className={classes.container}>
-        <input 
-          className={classes.input} 
-          onChange={handleChange}
-          type="text" 
-          placeholder="Search chats" 
-        />
+    <div className={classes.container}>
+      <input 
+        className={classes.input} 
+        onChange={handleChange}
+        type="text" 
+        placeholder="Search chats" 
+      />
 
-      </div>
-      
-    </>
+    </div>
+    
+
   )
 }
 

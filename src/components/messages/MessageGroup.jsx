@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@mui/styles'
-import { Avatar, IconButton, Typography } from '@mui/material'
+import { Avatar, IconButton, Tooltip, Typography } from '@mui/material'
 import { connect } from 'react-redux'
 import { setSelectedGroup } from 'actions/groupActions'
 import { addUserGroup } from 'actions/profileActions'
@@ -71,9 +71,12 @@ const MessageGroup = (props) => {
       </div>
 
       <div className={classes.addButton} hidden={!showAdd} >
-        <IconButton onClick={() => addUserGroup(id, currentUser.uid)}>
-          <AddCircleIcon className={classes.icon} fontSize="large"/>
-        </IconButton>
+        <Tooltip title="Add Group">
+          <IconButton onClick={() => addUserGroup(id, currentUser.uid)}>
+            <AddCircleIcon className={classes.icon} fontSize="large"/>
+          </IconButton>
+        </Tooltip>
+      
       </div> 
 
     </div>
