@@ -1,9 +1,12 @@
 import React from 'react'
 import { makeStyles } from '@mui/styles'
-import { Avatar, Typography } from '@mui/material'
+import { Avatar, IconButton, Typography } from '@mui/material'
 import { connect } from 'react-redux'
 import { setSelectedGroup } from 'actions/groupActions'
+import { addUserGroup } from 'actions/profileActions'
 import { avatarSrc } from 'helpers.js'
+import { AddCircle as AddCircleIcon } from '@mui/icons-material'
+import { useAuth } from 'contexts/AuthContext'
 
 const useStyles = makeStyles(theme => ({
   container:  {
@@ -28,18 +31,31 @@ const useStyles = makeStyles(theme => ({
   },
   selected: {
     backgroundColor: 'lightgrey'
+  },
+  addButton: {
+    marginLeft: 'auto',
+    alignSelf: 'center',
+  },
+  icon: {
+    color: "#05e254",
   }
 }))
 
 const MessageGroup = (props) => {
   const classes = useStyles()
   
-  const { id, lastMessage, name, selected } = props
+  const { id, lastMessage, name, selected, selectable, showAdd } = props
+  const { currentUser } = useAuth()
+  
+  const handleSelectClick = () => {
+    if (id && selectable)
+      props.setSelectedGroup(id)
+  }
   
   return (
     <div 
       className={selected ? `${classes.container} ${classes.selected}` : classes.container}
-      onClick={() => id ? props.setSelectedGroup(id) : null}
+      onClick={handleSelectClick}
     >
       <Avatar src={avatarSrc(lastMessage.username)}/>
       
@@ -54,6 +70,12 @@ const MessageGroup = (props) => {
 
       </div>
 
+      <div className={classes.addButton} hidden={!showAdd} >
+        <IconButton onClick={() => addUserGroup(id, currentUser.uid)}>
+          <AddCircleIcon className={classes.icon} fontSize="large"/>
+        </IconButton>
+      </div> 
+
     </div>
   )
 }
@@ -67,17 +89,10 @@ MessageGroup.defaultProps = {
     uid: null,
     username: 'Default'
   },
-  selected: false
+  selected: false,
+  selectable: false,
+  showAdd: false,
 }
 
 
 export default connect(null, {setSelectedGroup})(MessageGroup)
-
-/*
-props: 
-group: {
-
-},
-selected Boolean
-
-*/
