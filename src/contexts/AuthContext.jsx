@@ -1,7 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
   signOut, 
   onAuthStateChanged, 
   signInWithPopup, 
@@ -17,15 +15,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({children}) => {
   const [currentUser, setCurrentUser] = useState()
-  const [loading, setLoading] = useState(false)
-
-  const signup = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password)
-  }
-
-  const login = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password)
-  }
+  const [loading, setLoading] = useState(true)
 
   const logout = () => {
     return signOut(auth)
@@ -46,9 +36,7 @@ export const AuthProvider = ({children}) => {
 
   const value = {
     currentUser,
-    login,
     logout,
-    signup,
     googleAuth
   }
 
