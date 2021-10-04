@@ -1,11 +1,10 @@
+import React, { useState, useEffect, useRef } from 'react'
 import { Avatar, Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import React, { useState, useEffect } from 'react'
 import Message from 'components/messages/Message'
 import MessageForm from 'components/messages/MessageForm'
 import { connect } from 'react-redux'
 import { avatarSrc, timestampToString } from 'helpers.js';
-
 
 const useStyles = makeStyles(theme => ({
   box: {
@@ -50,6 +49,8 @@ const MessageRoom = (props) => {
   const classes = useStyles()
   const [messages, setMessages] = useState([])
   const [headData, setHeadData] = useState({lastSeen: '', name: 'Default', avatar: avatarSrc('Default')})
+  const bottom = useRef(null)
+
   const { groups, selectedGroup } = props
   const group = groups.find(g => g.id === selectedGroup)
   
@@ -69,6 +70,13 @@ const MessageRoom = (props) => {
       })
     }
   }, [group])
+
+  // scrolls to ref which is at the bottom of the messages
+  const scrollToBottom = () => bottom.current.scrollIntoView({behavior: 'smooth'})
+  
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
   
   const renderMessages = (messages) => {
     return messages.map((message, i) => (
@@ -110,6 +118,7 @@ const MessageRoom = (props) => {
       
       <div className={classes.body}>
         {renderMessages(messages)}
+        <div ref={bottom}></div>
       </div>
       
       <div className={classes.footer}>
