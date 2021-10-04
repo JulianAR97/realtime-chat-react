@@ -90,7 +90,7 @@ const MessageGroup = (props) => {
       </div>
 
       {/* Remove group button */}
-      <div className={classes.button} hidden={showAdd}>
+      <div className={classes.button} hidden={showAdd || !id}>
         <Tooltip title="Leave Group">
           <IconButton onClick={() => setShowConfirm(true)}>
             <ExitIcon className={classes.exitIcon} fontSize="large"/>
