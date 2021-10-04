@@ -54,6 +54,7 @@ const MessageRoom = (props) => {
   const { groups, selectedGroup } = props
   const group = groups.find(g => g.id === selectedGroup)
   
+  // update messages when group changes
   useEffect(() => {
     setMessages(group?.messages || [])
   }, [group])

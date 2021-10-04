@@ -55,8 +55,6 @@ const MessageGroup = (props) => {
     if (id && selectable)
       props.setSelectedGroup(id)
   }
-
-
   
   return (
     <div 
