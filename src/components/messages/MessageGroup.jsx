@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@mui/styles'
 import { Avatar, IconButton, Tooltip, Typography } from '@mui/material'
 import { connect } from 'react-redux'
 import { setSelectedGroup } from 'actions/groupActions'
-import { addUserGroup } from 'actions/profileActions'
+import { addUserGroup, removeUserGroup } from 'actions/profileActions'
 import { avatarSrc, getLastSeen } from 'helpers.js'
-import { AddCircle as AddCircleIcon } from '@mui/icons-material'
+import { AddCircle as AddCircleIcon, HighlightOff as ExitIcon } from '@mui/icons-material'
 import { useAuth } from 'contexts/AuthContext'
+import ConfirmDialog from 'components/ConfirmDialog'
 
 const useStyles = makeStyles(theme => ({
   container:  {
@@ -32,12 +33,15 @@ const useStyles = makeStyles(theme => ({
   selected: {
     backgroundColor: 'lightgrey'
   },
-  addButton: {
+  button: {
     marginLeft: 'auto',
     alignSelf: 'center',
   },
-  icon: {
+  addIcon: {
     color: "#05e254",
+  },
+  exitIcon: {
+    color: "#ff0000"
   },
   timestamp: {
     fontSize: 'small !important',
@@ -47,13 +51,21 @@ const useStyles = makeStyles(theme => ({
 
 const MessageGroup = (props) => {
   const classes = useStyles()
-  
+  const [showConfirm, setShowConfirm] = useState(false)
   const { id, lastMessage, name, selected, selectable, showAdd } = props
   const { currentUser } = useAuth()
   
   const handleSelectClick = () => {
     if (id && selectable)
       props.setSelectedGroup(id)
+  }
+
+  const handleConfirmClose = (e) => {
+    console.log(e.target.innerText)
+    if (e.target.innerText === 'AGREE')  
+      removeUserGroup(id, currentUser.uid) 
+
+    setShowConfirm(false)
   }
   
   return (
@@ -62,29 +74,45 @@ const MessageGroup = (props) => {
       onClick={handleSelectClick}
     >
       <Avatar src={avatarSrc(lastMessage.username)}/>
-      
-      <div className={classes.infoContainer}>
-        
+
+      <div className={classes.infoContainer}>        
         <Typography className={classes.groupName}>
           {name}
         </Typography>
+        
         <Typography className={classes.lastMessage}>
           {lastMessage.content}
         </Typography>
+        
         <Typography className={classes.timestamp}>
           {getLastSeen(lastMessage.timestamp)}
         </Typography>
-
       </div>
 
-      <div className={classes.addButton} hidden={!showAdd} >
-        <Tooltip title="Add Group">
-          <IconButton onClick={() => addUserGroup(id, currentUser.uid)}>
-            <AddCircleIcon className={classes.icon} fontSize="large"/>
+      {/* Remove group button */}
+      <div className={classes.button} hidden={showAdd}>
+        <Tooltip title="Leave Group">
+          <IconButton onClick={() => setShowConfirm(true)}>
+            <ExitIcon className={classes.exitIcon} fontSize="large"/>
           </IconButton>
         </Tooltip>
-      
-      </div> 
+      </div>
+
+      {/* Add group button */}
+      <div className={classes.button} hidden={!showAdd} >
+        <Tooltip title="Add Group">
+          <IconButton onClick={() => addUserGroup(id, currentUser.uid)}>
+            <AddCircleIcon className={classes.addIcon} fontSize="large"/>
+          </IconButton>
+        </Tooltip>
+      </div>
+
+      {/* Confirm dialog for removing group */}
+      <ConfirmDialog 
+        open={showConfirm} 
+        title="Are you sure you want to leave this Group"
+        handleClose={handleConfirmClose}
+      />
 
     </div>
   )
