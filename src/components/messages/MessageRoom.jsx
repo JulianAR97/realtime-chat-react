@@ -1,9 +1,11 @@
-import { Box } from '@mui/material'
+import { Avatar, Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import React, { useState, useEffect } from 'react'
 import Message from 'components/messages/Message'
 import MessageForm from 'components/messages/MessageForm'
 import { connect } from 'react-redux'
+import { avatarSrc, timestampToString } from 'helpers.js';
+
 
 const useStyles = makeStyles(theme => ({
   box: {
@@ -32,6 +34,14 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'lightgrey',
     padding: '10px'
   },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginLeft: '10px'
+  },
+  contentText: {
+    margin: '5px'
+  }
 
 
 }))
@@ -39,12 +49,24 @@ const useStyles = makeStyles(theme => ({
 const MessageRoom = (props) => {
   const classes = useStyles()
   const [messages, setMessages] = useState([])
-
+  const [headData, setHeadData] = useState({lastSeen: '', name: 'Default', avatar: avatarSrc('Default')})
   const { groups, selectedGroup } = props
   const group = groups.find(g => g.id === selectedGroup)
   
   useEffect(() => {
     setMessages(group?.messages || [])
+  }, [group])
+  
+  useEffect(() => {
+    if (group) {
+      let { name, messages } = group
+      let lastMessage = messages[messages.length - 1]
+      setHeadData({
+        lastSeen: timestampToString(lastMessage.timestamp),
+        name,
+        avatar: avatarSrc(lastMessage.username)
+      })
+    }
   }, [group])
   
   const renderMessages = (messages) => {
@@ -59,11 +81,32 @@ const MessageRoom = (props) => {
     ))  
   }
 
+
+  console.log(headData)
+
+  const renderHead = () => {
+    
+    return (
+      <>
+        <Avatar src={headData.avatar} />
+        <div className={classes.content}>
+          <div className={classes.contentText}>
+            <h3>{headData.name}</h3>
+          </div>
+          <div className={classes.contentText}>
+            <h4>Last Seen at {headData.lastSeen}</h4>
+          </div>
+
+        </div>
+      </>
+    )
+  }
+
   return (
     <Box className={classes.box}>
       
       <div className={classes.header}>
-        I am MR
+        {renderHead()}
       </div>
       
       <div className={classes.body}>

@@ -1,6 +1,7 @@
 import { makeStyles } from '@mui/styles'
 import React from 'react'
 import { useAuth } from 'contexts/AuthContext'
+import { timestampToString } from 'helpers'
 
 const useStyles = makeStyles(theme => ({
   message: {
@@ -46,7 +47,7 @@ const Message = (props) => {
       {content}
       
       <span className={classes.messageTS}>
-        {new Date(timestamp.seconds).toLocaleString()}
+        { timestampToString(timestamp) }
       </span>
     </p>
   )
