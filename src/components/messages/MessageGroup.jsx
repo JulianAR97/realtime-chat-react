@@ -76,17 +76,22 @@ const MessageGroup = (props) => {
       <Avatar src={avatarSrc(lastMessage.username)}/>
 
       <div className={classes.infoContainer}>        
+        
+        {/* Group Name */}
         <Typography className={classes.groupName}>
           {name}
         </Typography>
         
+        {/* Last Message Text */}
         <Typography className={classes.lastMessage}>
           {lastMessage.content}
         </Typography>
         
-        <Typography className={classes.timestamp}>
+        {/* Last Seen Text */}
+        <Typography className={classes.timestamp} hidden={!id}>
           {getLastSeen(lastMessage.timestamp)}
         </Typography>
+      
       </div>
 
       {/* Remove group button */}
@@ -110,7 +115,7 @@ const MessageGroup = (props) => {
       {/* Confirm dialog for removing group */}
       <ConfirmDialog 
         open={showConfirm} 
-        title="Are you sure you want to leave this Group"
+        title="Are you sure you want to leave this group?"
         handleClose={handleConfirmClose}
       />
 
