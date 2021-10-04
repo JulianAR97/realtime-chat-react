@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
-import { Paper, useTheme } from '@mui/material'
+import { Paper, Typography, useTheme } from '@mui/material'
 import db from 'firebase.js'
 import { onSnapshot, collection , doc} from "firebase/firestore"
 import Login from 'components/auth/Login'
@@ -27,6 +27,9 @@ const useStyles = makeStyles(theme => ({
     height: "90vh",
     width: "90vw",
     backgroundColor: 'lightPink !important',
+  },
+  footer: {
+    color: 'white'
   }
 }))
 
@@ -82,6 +85,11 @@ const App = (props) => {
           </Switch>
         </Router>
       </Paper>
+      <div className={classes.footer}>
+        <Typography variant="subtitle2">
+          Created 2021 - Julian Rosenthal
+        </Typography>
+      </div>
     </div>
   
   )
