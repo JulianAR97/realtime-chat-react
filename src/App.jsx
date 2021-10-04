@@ -42,11 +42,12 @@ const App = (props) => {
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "groups"), (snapshot) => {
       sg(snapshot.docs.map(doc => {
-        let { name, messages } = doc.data()
+        let { name, messages, users } = doc.data()
         return ({
           id: doc.id,
           name,
-          messages
+          messages,
+          users
         })
       }))
     });
