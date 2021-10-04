@@ -11,6 +11,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     flex: 0.7,
+    minWidth: '100px',
+    minHeight: '100px',
+    backgroundColor: 'white'
   },
   body: {
     flex: 1,
@@ -111,7 +114,7 @@ const MessageRoom = (props) => {
   }
 
   return (
-    <Box className={classes.box}>
+    <Box id="messageRoom" className={classes.box}>
       
       <div className={classes.header}>
         {renderHead()}

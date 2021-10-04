@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Avatar, Container, IconButton, Menu, MenuItem, Tooltip } from '@mui/material'
+import { Avatar, Container, IconButton, Menu, MenuItem, Tooltip, useTheme } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import MessageGroup from 'components/messages/MessageGroup'
 import { connect } from 'react-redux'
@@ -17,6 +17,12 @@ const useStyles = makeStyles(theme => ({
     borderRight: '1px solid black',
     padding: '20px',
     overflow: 'scroll',
+    minWidth: '100px',
+    minHeight: '100px',
+    backgroundColor: 'white',
+    [theme.breakpoints.down('md')]: {
+      marginBottom: '20px'
+    }
   },
   header: {
     display: 'flex',
@@ -37,14 +43,17 @@ const useStyles = makeStyles(theme => ({
   createButton: {
     width: '40px',
     height: '40px',
-  }
+  },
+
 }))
 
 const SideNav = (props) => {
+  // Hooks
+  const theme = useTheme()
+  const { logout, currentUser } = useAuth()
+  const classes = useStyles(theme)
   
   // Variable Declarations
-  const { logout, currentUser } = useAuth()
-  const classes = useStyles()
   const { groups, selectedGroup, userGroups, username } = props
   const filteredGroups = 
     groups.filter(g => userGroups.includes(g.id))
@@ -124,7 +133,7 @@ const SideNav = (props) => {
   
 
   return (
-    <Container className={classes.container}>
+    <Container id="nav" className={classes.container}>
 
       <div className={classes.header}>
         

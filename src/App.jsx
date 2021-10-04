@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
-import { Paper } from '@mui/material'
+import { Paper, useTheme } from '@mui/material'
 import db from 'firebase.js'
 import { onSnapshot, collection , doc} from "firebase/firestore"
 import Login from 'components/auth/Login'
@@ -20,16 +20,21 @@ const useStyles = makeStyles(theme => ({
   },
   Paper: {
     display: "flex",
+    flexDirection: "row",
+    [theme.breakpoints.down('md')]: {
+      flexDirection: "column"
+    },
     height: "90vh",
-    width: "90vw"
+    width: "90vw",
+    backgroundColor: 'lightPink !important',
   }
 }))
 
 
 const App = (props) => {
-  const classes = useStyles()
+  const theme = useTheme()
+  const classes = useStyles(theme)
   const { currentUser } = useAuth()
-
   const sg = props.setGroups
   const sp = props.setProfile
   
