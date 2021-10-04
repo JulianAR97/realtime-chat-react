@@ -1,5 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@mui/styles'
+import { sortChronological } from 'helpers.js'
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -30,6 +31,7 @@ const NavSearch = (props) => {
       const regex = new RegExp(`${text}`, 'gi');
       return group.name.match(regex)
     })
+    .sort((a, b) => sortChronological(a, b))
 
     // set matches from search in parent component
     return matches
