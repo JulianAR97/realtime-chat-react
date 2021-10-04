@@ -72,6 +72,12 @@ const MessageRoom = (props) => {
         name,
         avatar: avatarSrc(lastMessage.username)
       })
+    } else {
+      setHeadData({
+        lastSeen: '',
+        name: 'Default',
+        avatar: avatarSrc('Default')
+      })
     }
   }, [group])
 
