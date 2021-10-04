@@ -64,6 +64,7 @@ const SideNav = (props) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [showNewGroupForm, setShowNewGroupForm] = useState(false)
   
+
   // Helper functions
   const renderGroups = (filteredGroups) => {
    
@@ -75,6 +76,7 @@ const SideNav = (props) => {
           key={group.id}
           id={group.id}
           name={group.name}
+          users={group.users}
           lastMessage={group.messages[group.messages.length - 1]}
           selected={group.id === selectedGroup}
           selectable={true}
