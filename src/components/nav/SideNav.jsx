@@ -4,7 +4,7 @@ import { makeStyles } from '@mui/styles'
 import MessageGroup from 'components/messages/MessageGroup'
 import { connect } from 'react-redux'
 import NavSearch from 'components/nav/NavSearch'
-import { avatarSrc } from 'helpers'
+import { avatarSrc, sortChronological } from 'helpers'
 import { Create } from '@mui/icons-material'
 import { useAuth } from 'contexts/AuthContext';
 import GroupForm from 'components/GroupForm'
@@ -46,7 +46,9 @@ const SideNav = (props) => {
   const { logout, currentUser } = useAuth()
   const classes = useStyles()
   const { groups, selectedGroup, userGroups, username } = props
-  const filteredGroups = groups.filter(g => userGroups.includes(g.id))
+  const filteredGroups = 
+    groups.filter(g => userGroups.includes(g.id))
+    .sort((a, b) => sortChronological(a, b))
   
   // State
   const [groupMatches, setGroupMatches] = useState([])
