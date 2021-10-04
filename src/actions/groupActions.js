@@ -1,5 +1,5 @@
 import db from 'firebase.js'
-import { collection, doc, setDoc, Timestamp } from 'firebase/firestore'
+import { collection, doc, setDoc, updateDoc, increment, Timestamp } from 'firebase/firestore'
 
 // Firebase
 export const createGroup = async (name) => {
@@ -14,10 +14,26 @@ export const createGroup = async (name) => {
         timestamp: Timestamp.fromDate(new Date()),
         uid: "123",
         username: "Bot"
-      }]
+      }],
+      users: 1
     })
 
     return newGroupRef.id
+  } catch (err) {
+    alert(err)
+  }
+}
+
+/**
+ * 
+ * @param {String} groupId
+ * @param {Number} amount (default 1)
+ */
+export const incrementGroupUsers = (groupId, amount = 1) => {
+  try {
+    const docRef = doc(db, "groups", groupId)
+
+    updateDoc(docRef, {users: increment(amount)})
   } catch (err) {
     alert(err)
   }
