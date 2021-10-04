@@ -9,14 +9,17 @@ import groupReducer from 'reducers/groupReducer.js'
 import './index.css';
 import { AuthProvider } from 'contexts/AuthContext'
 import reportWebVitals from './reportWebVitals'
+import { createTheme, ThemeProvider } from '@mui/material';
 
 const store = createStore(groupReducer, composeWithDevTools(applyMiddleware(thunk)))
-
+const theme = createTheme()
 ReactDOM.render(
   <React.StrictMode>
     <AuthProvider>
       <Provider store={store}>
-        <App />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </Provider>
     </AuthProvider>
   </React.StrictMode>,
