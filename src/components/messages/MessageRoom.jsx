@@ -61,6 +61,7 @@ const MessageRoom = (props) => {
     if (group) {
       let { name, messages } = group
       let lastMessage = messages[messages.length - 1]
+      
       setHeadData({
         lastSeen: timestampToString(lastMessage.timestamp),
         name,
@@ -81,8 +82,6 @@ const MessageRoom = (props) => {
     ))  
   }
 
-
-  console.log(headData)
 
   const renderHead = () => {
     
