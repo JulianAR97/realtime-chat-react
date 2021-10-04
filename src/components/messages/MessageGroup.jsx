@@ -4,7 +4,7 @@ import { Avatar, IconButton, Tooltip, Typography } from '@mui/material'
 import { connect } from 'react-redux'
 import { setSelectedGroup } from 'actions/groupActions'
 import { addUserGroup } from 'actions/profileActions'
-import { avatarSrc } from 'helpers.js'
+import { avatarSrc, getLastSeen } from 'helpers.js'
 import { AddCircle as AddCircleIcon } from '@mui/icons-material'
 import { useAuth } from 'contexts/AuthContext'
 
@@ -38,6 +38,10 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     color: "#05e254",
+  },
+  timestamp: {
+    fontSize: 'small !important',
+    color: 	'rgba(0,0,0, 0.6)'
   }
 }))
 
@@ -51,6 +55,8 @@ const MessageGroup = (props) => {
     if (id && selectable)
       props.setSelectedGroup(id)
   }
+
+
   
   return (
     <div 
@@ -66,6 +72,9 @@ const MessageGroup = (props) => {
         </Typography>
         <Typography className={classes.lastMessage}>
           {lastMessage.content}
+        </Typography>
+        <Typography className={classes.timestamp}>
+          {getLastSeen(lastMessage.timestamp)}
         </Typography>
 
       </div>
@@ -87,7 +96,7 @@ MessageGroup.defaultProps = {
   name: 'Default',
   id: null,
   lastMessage: {
-    timestamp: {seconds: 1632740700, nanoseconds: 0},
+    timestamp: null,
     content: "Add groups via searchbar",
     uid: null,
     username: 'Default'
