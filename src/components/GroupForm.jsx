@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end'
   },
   createIcon: {
-    color: "#05e254",
+    color: '#05e254'
   },
   exitIcon: {
     color: "#ff0000"
@@ -51,6 +51,11 @@ const useStyles = makeStyles(theme => ({
   },
   header: {
     marginBottom: '10px'
+  },
+  iconButton: {
+    "&:disabled": {
+      opacity: 0.5
+    }
   }
 }))
 const GroupForm = (props) => {
@@ -100,7 +105,7 @@ const GroupForm = (props) => {
             </Tooltip>
           </IconButton>
           
-          <IconButton onClick={handleCreate} type="submit" disabled={!groupName}>
+          <IconButton className={classes.iconButton} onClick={handleCreate} type="submit" disabled={!groupName || groupName.length > 12}>
             <Tooltip title="Create Group">
               <AddCircleIcon className={classes.createIcon} fontSize="large"/>
             </Tooltip>
