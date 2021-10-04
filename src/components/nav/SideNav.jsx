@@ -135,7 +135,7 @@ const SideNav = (props) => {
         </Tooltip>
 
         <Tooltip title="Create a Group">
-          <IconButton className={classes.createButton} onClick={() => setShowNewGroupForm(true)}>
+          <IconButton className={classes.createButton} onClick={() => setShowNewGroupForm(!showNewGroupForm)}>
             <Create />
           </IconButton>        
         </Tooltip>
